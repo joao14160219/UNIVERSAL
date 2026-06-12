@@ -427,10 +427,10 @@ const INVITE_EMAIL_HTML = `
             guarda esse email com carinho 🌹
           </p>
           <div style="background:rgba(255,77,148,.06);border:1px solid rgba(255,77,148,.15);border-radius:16px;padding:24px 28px;margin-bottom:28px;">
-            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">DATA</strong><br>11/06/2026</p>
-            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">LOCAL</strong><br>Minha casa</p>
-            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">O QUE ESPERAR</strong><br>Comida muuuuuito boa, carinho e massagens.</p>
-            <p style="margin:0;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">TRAJE</strong><br>Gostosa como sempre</p>
+            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">DATA</strong><br>20/06/2026</p>
+            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">LOCAL</strong><br>Restaurante bem gostoso</p>
+            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">O QUE ESPERAR</strong><br>Comida muuuuuito boa.</p>
+            <p style="margin:0;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">TRAJE</strong><br>Bonita como sempre</p>
           </div>
         </div>
         <div style="border-top:1px solid rgba(255,100,176,.1);padding:24px 32px;text-align:center;">
@@ -484,7 +484,7 @@ async function sendInviteEmail() {
       to_name: 'Gabi',
       from_name: 'João',
       subject: 'Seu jantar especial 💕',
-      message: 'Que bom que disse sim! Nosso jantar vai ser muito bom. Data: 11/06/2026. Local: Minha casa. O que esperar: Comida muuuuuito boa, carinho e massagens.',
+      message: 'Que bom que disse sim! Nosso jantar vai ser muito bom. Data: 20/06/2026. Local: Restaurante bem gostoso. O que esperar: Comida muuuuuito boa.',
       message_html: INVITE_EMAIL_HTML,
       reply_to: guestEmail
     });
