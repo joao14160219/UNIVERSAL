@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seu jantar especial 💕</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+  body { margin:0; padding:0; background:#0d0010; font-family:'Inter',sans-serif; }
+  .wrapper { max-width:540px; margin:0 auto; padding:40px 16px; }
+
+  .card {
+    background: linear-gradient(160deg, #180020 0%, #0d0010 60%, #1a0025 100%);
+    border: 1px solid rgba(255,100,176,.18);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 0 80px rgba(255,77,148,.08);
+  }
+
+  /* hero */
+  .hero {
+    background: linear-gradient(180deg, #250035 0%, #180020 100%);
+    padding: 48px 32px 36px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,100,176,.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,77,148,.18) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .heart-svg { width:80px; height:80px; margin-bottom:20px; display:block; margin-left:auto; margin-right:auto; }
+  .hero h1 {
+    font-family:'Playfair Display',serif;
+    font-size:2.1rem;
+    font-weight:400;
+    color:#fff;
+    margin:0 0 8px;
+    line-height:1.2;
+  }
+  .hero h1 em { font-style:italic; color:#ff6fb0; }
+  .hero p {
+    color:#b090b8;
+    font-weight:300;
+    font-size:.92rem;
+    margin:0;
+    letter-spacing:.02em;
+  }
+
+  /* body */
+  .body { padding:36px 32px; }
+
+  .divider {
+    width:48px; height:1px;
+    background: linear-gradient(90deg,transparent,#ff6fb0,transparent);
+    margin:0 auto 28px;
+  }
+
+  .body p {
+    color:#c0a8c8;
+    font-size:.95rem;
+    line-height:1.8;
+    font-weight:300;
+    text-align:center;
+    margin:0 0 24px;
+  }
+
+  .details-box {
+    background: rgba(255,77,148,.06);
+    border: 1px solid rgba(255,77,148,.15);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+  .detail-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .detail-row:last-child { margin-bottom:0; }
+  .detail-icon { font-size:1.2rem; flex-shrink:0; margin-top:1px; }
+  .detail-text { flex:1; }
+  .detail-label {
+    display:block;
+    font-size:.7rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#ff6fb0;
+    font-weight:500;
+    margin-bottom:2px;
+  }
+  .detail-value {
+    font-size:.92rem;
+    color:#e0c8e8;
+    font-weight:300;
+  }
+
+  .cta {
+    display:block;
+    background: linear-gradient(135deg, #ff4d94, #c2185b);
+    color:#fff !important;
+    text-decoration:none;
+    text-align:center;
+    padding:14px 32px;
+    border-radius:50px;
+    font-size:1rem;
+    font-weight:500;
+    letter-spacing:.03em;
+    margin:8px 0 28px;
+    box-shadow: 0 0 30px rgba(255,77,148,.35);
+  }
+
+  .footer {
+    border-top: 1px solid rgba(255,100,176,.1);
+    padding: 24px 32px;
+    text-align:center;
+  }
+  .footer p {
+    color:#6a4a72;
+    font-size:.8rem;
+    margin:0;
+    line-height:1.6;
+  }
+  .hearts { font-size:1.2rem; letter-spacing:.2em; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+
+    <!-- HERO -->
+    <div class="hero">
+      <!-- Animated SVG Heart -->
+      <svg class="heart-svg" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hg" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ff6fb0"/>
+            <stop offset="100%" stop-color="#c2185b"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <path filter="url(#glow)"
+          d="M50 82 C50 82 8 52 8 28 C8 14 20 6 32 6 C40 6 47 11 50 18 C53 11 60 6 68 6 C80 6 92 14 92 28 C92 52 50 82 50 82Z"
+          fill="url(#hg)">
+          <animateTransform attributeName="transform" type="scale"
+            values="1;1.07;1" dur="1.4s" repeatCount="indefinite"
+            additive="sum" transformOrigin="50 45"/>
+        </path>
+      </svg>
+
+      <h1>Save the,<br><em> DATE!</em></h1>
+    </div>
+
+    <!-- BODY -->
+    <div class="body">
+      <div class="divider"></div>
+
+      <p>
+      Que bom que disse sim, nosso jantar vai ser muito bom —<br>
+      guarda esse email com carinho 🌹</p>
+
+      <div class="details-box">
+        <div class="detail-row">
+          <span class="detail-icon">📅</span>
+          <div class="detail-text">
+            <span class="detail-label">Data</span>
+            <span class="detail-value">20/06/2026</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon">📍</span>
+          <div class="detail-text">
+            <span class="detail-label">LOCAL</span>
+            <span class="detail-value">Restaurante bem gostoso</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon">🍷</span>
+          <div class="detail-text">
+            <span class="detail-label">O QUE ESPERAR</span>
+            <span class="detail-value">Comida muuuuuito boa.</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon">💌</span>
+          <div class="detail-text">
+            <span class="detail-label">TRAJE</span>
+            <span class="detail-value">Bonita como sempre</span>
+          </div>
+        </div>
+      </div>
+
+      </p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="hearts">💗 💕 💗</div>
+      <p style="margin-top:10px;">
+        Você foi convidada porque é especial.<br>
+        <span style="color:#ff6fb0;">Isso é um fato.</span>
+      </p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

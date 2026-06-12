@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Um pedido especial 💕</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0f;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── CANVAS ── */
+  #heartCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── SCREENS ── */
+  .screen {
+    position: relative;
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeIn .6s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── INVITE SCREEN ── */
+  #screen-invite .tagline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: .8rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: #ff6fb0;
+    margin-bottom: 1.2rem;
+  }
+
+  #screen-invite h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: .8rem;
+    color: #fff;
+  }
+
+  #screen-invite h1 em {
+    font-style: italic;
+    color: #ff6fb0;
+  }
+
+  #screen-invite p {
+    color: #c8b0c0;
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 2.8rem;
+    max-width: 340px;
+    line-height: 1.7;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 52px;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, #ff4d94, #c2185b);
+    color: #fff;
+    border: none;
+    padding: .9rem 2.8rem;
+    font-size: 1.05rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255,77,148,.4), 0 0 60px rgba(255,77,148,.15);
+    transition: transform .2s, box-shadow .2s;
+    letter-spacing: .03em;
+    min-width: 176px;
+  }
+  .btn-yes:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 50px rgba(255,77,148,.6), 0 0 90px rgba(255,77,148,.25);
+  }
+
+  .btn-no {
+    background: rgba(255,255,255,.05);
+    color: #c8b0c0;
+    border: 1px solid rgba(255,109,176,.25);
+    padding: .9rem 2.2rem;
+    font-size: 1.05rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    border-radius: 50px;
+    cursor: pointer;
+    position: static;
+    transition: opacity .15s, transform .2s, border-color .2s, background .2s, color .2s;
+    white-space: nowrap;
+    z-index: 999;
+    min-width: 176px;
+    letter-spacing: .03em;
+  }
+  .btn-no:hover {
+    background: rgba(255,109,176,.08);
+    border-color: rgba(255,109,176,.45);
+    color: #fff;
+    transform: scale(1.04);
+  }
+
+  /* ── YES SCREEN ── */
+  #screen-yes h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: .6rem;
+    text-shadow: 0 0 40px rgba(255,109,176,.5);
+  }
+
+  #screen-yes .sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: #ff6fb0;
+    margin-bottom: 2rem;
+  }
+
+  #screen-yes p {
+    color: #c8b0c0;
+    font-weight: 300;
+    font-size: .95rem;
+    max-width: 360px;
+    line-height: 1.7;
+    margin-bottom: 2.4rem;
+  }
+
+  .email-actions {
+    display: flex;
+    gap: .6rem;
+    width: 100%;
+    max-width: 380px;
+    justify-content: center;
+  }
+
+  .email-actions input {
+    flex: 1;
+    min-width: 0;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,109,176,.3);
+    border-radius: 50px;
+    padding: .85rem 1.3rem;
+    color: #fff;
+    font-size: .9rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .email-actions input::placeholder { color: #7c5a75; }
+  .email-actions input:focus { border-color: #ff6fb0; }
+
+  .btn-open-email {
+    background: linear-gradient(135deg, #ff4d94, #c2185b);
+    color: #fff;
+    border: none;
+    padding: .85rem 1.7rem;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: .95rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform .2s;
+    box-shadow: 0 0 28px rgba(255,77,148,.28);
+  }
+  .btn-open-email:hover { transform: scale(1.05); }
+  .btn-open-email:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .send-status {
+    color: #ffb4d2;
+    font-size: .82rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+    min-height: 1.3rem;
+    max-width: 340px;
+  }
+
+  @media (max-width: 520px) {
+    .email-actions {
+      flex-direction: column;
+    }
+  }
+
+  /* ── SPARKLE OVERLAY ── */
+  #sparkleCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="heartCanvas"></canvas>
+<canvas id="sparkleCanvas"></canvas>
+
+<!-- SCREEN 1: INVITE -->
+<div class="screen active" id="screen-invite">
+  <div class="tagline">✦ CONVITE FORMAL ✦</div>
+  <h1>Gabi você aceita<br> jantar <em>comigo?</em></h1>
+  <p>Boa comida, boa conversa e<br>uma companhia boa por uma noite. 🥂</p>
+  <div class="btn-group">
+    <button class="btn-yes" onclick="handleYes()">Sim, adorei! 💕</button>
+    <button class="btn-no" id="btn-no" onclick="runAway(this)">Não...</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: YES -->
+<div class="screen" id="screen-yes">
+  <h2>Muito boa<br>escolha 💘</h2>
+  <div class="sub">Olhe seu email com as informações.</div>
+  <p>Coloque seu email aqui embaixo<br>para receber o convite com<br>todos os detalhes.</p>
+  <div class="email-actions">
+    <input type="email" id="guestEmail" placeholder="seuemail@exemplo.com" />
+    <button class="btn-open-email" id="btnSendInvite" onclick="sendInviteEmail()">Enviar convite 💌</button>
+  </div>
+  <div class="send-status" id="sendStatus"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+/* ══════════════════════════════════════
+   HEART PARTICLE ANIMATION
+══════════════════════════════════════ */
+const canvas = document.getElementById('heartCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); buildHeart(); });
+
+// heart parametric equation
+function heartXY(t, scale, cx, cy) {
+  const x = 16 * Math.pow(Math.sin(t), 3);
+  const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+  return { x: cx + x * scale, y: cy + y * scale };
+}
+
+class Particle {
+  constructor(tx, ty) {
+    this.tx = tx; this.ty = ty;          // target
+    this.x  = tx + (Math.random()-.5)*220;
+    this.y  = ty + (Math.random()-.5)*220;
+    this.vx = 0; this.vy = 0;
+    this.size   = Math.random() * 2.5 + .8;
+    this.alpha  = Math.random() * .6 + .4;
+    this.color  = `hsl(${320 + Math.random()*40},100%,${60+Math.random()*20}%)`;
+    this.speed  = Math.random() * .04 + .02;
+    this.wobble = Math.random() * Math.PI * 2;
+    this.wobbleSpeed = Math.random() * .04 + .01;
+  }
+  update() {
+    this.wobble += this.wobbleSpeed;
+    const wx = Math.sin(this.wobble) * 1.2;
+    const wy = Math.cos(this.wobble * 1.3) * 1.2;
+    this.x += (this.tx - this.x) * this.speed + wx;
+    this.y += (this.ty - this.y) * this.speed + wy;
+  }
+  draw() {
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle   = this.color;
+    ctx.shadowBlur  = 6;
+    ctx.shadowColor = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function buildHeart() {
+  const scale = Math.min(W, H) * .038;
+  const cx = W / 2, cy = H * .42;
+  particles = [];
+  const total = 1200;
+  for (let i = 0; i < total; i++) {
+    const t = (i / total) * Math.PI * 2;
+    const p = heartXY(t, scale, cx, cy);
+    p.x += (Math.random()-.5)*14;
+    p.y += (Math.random()-.5)*14;
+    particles.push(new Particle(p.x, p.y));
+  }
+}
+buildHeart();
+
+function animateHeart() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.shadowBlur = 0;
+  for (const p of particles) { p.update(); p.draw(); }
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animateHeart);
+}
+animateHeart();
+
+/* ══════════════════════════════════════
+   SPARKLE BURST (on YES)
+══════════════════════════════════════ */
+const sc = document.getElementById('sparkleCanvas');
+const sctx = sc.getContext('2d');
+sc.width = window.innerWidth; sc.height = window.innerHeight;
+window.addEventListener('resize', () => { sc.width = window.innerWidth; sc.height = window.innerHeight; });
+let sparks = [];
+
+function burstSparks() {
+  const cx = W/2, cy = H/2;
+  for (let i = 0; i < 160; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 12 + 3;
+    sparks.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+      life: 1,
+      decay: Math.random()*.025+.01,
+      size: Math.random()*4+1,
+      color: `hsl(${310+Math.random()*50},100%,${65+Math.random()*20}%)`
+    });
+  }
+  animateSparks();
+}
+
+function animateSparks() {
+  sctx.clearRect(0,0,sc.width,sc.height);
+  sparks = sparks.filter(s => s.life > 0);
+  for (const s of sparks) {
+    s.x += s.vx; s.y += s.vy;
+    s.vy += .18; s.life -= s.decay;
+    sctx.globalAlpha = s.life;
+    sctx.fillStyle = s.color;
+    sctx.shadowBlur = 8; sctx.shadowColor = s.color;
+    sctx.beginPath();
+    sctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+    sctx.fill();
+  }
+  sctx.globalAlpha = 1; sctx.shadowBlur = 0;
+  if (sparks.length > 0) requestAnimationFrame(animateSparks);
+}
+
+/* ══════════════════════════════════════
+   NO BUTTON — RUNS AWAY
+══════════════════════════════════════ */
+let noClicks = 0;
+
+function runAway(btn) {
+  noClicks++;
+  btn.style.position = 'fixed';
+  const margin = 80;
+  const maxX = window.innerWidth  - btn.offsetWidth  - margin;
+  const maxY = window.innerHeight - btn.offsetHeight - margin;
+  const nx = Math.random() * maxX + margin/2;
+  const ny = Math.random() * maxY + margin/2;
+  btn.style.left = nx + 'px';
+  btn.style.top  = ny + 'px';
+  const msgs = ['Não...','Que isso!','Para!','Vai sim!','Insiste!','Vai lá!','🏃💨'];
+  btn.textContent = msgs[Math.min(noClicks, msgs.length-1)];
+  if (noClicks >= 5) { btn.style.opacity = '.1'; btn.style.fontSize = '.6rem'; }
+}
+
+/* ══════════════════════════════════════
+   EMAIL SENDING
+══════════════════════════════════════ */
+const EMAIL_CONFIG = {
+  // Preencha estes 3 valores com os dados do seu painel do EmailJS.
+  publicKey: 'd_vqCswosM6WznK-Y',
+  serviceId: 'service_lfccq7g',
+  templateId: 'template_92cupi8'
+};
+
+const INVITE_EMAIL_HTML = `
+  <div style="margin:0;padding:0;background:#0d0010;font-family:Inter,Arial,sans-serif;">
+    <div style="max-width:540px;margin:0 auto;padding:40px 16px;">
+      <div style="background:linear-gradient(160deg,#180020 0%,#0d0010 60%,#1a0025 100%);border:1px solid rgba(255,100,176,.18);border-radius:24px;overflow:hidden;box-shadow:0 0 80px rgba(255,77,148,.08);">
+        <div style="background:linear-gradient(180deg,#250035 0%,#180020 100%);padding:48px 32px 36px;text-align:center;border-bottom:1px solid rgba(255,100,176,.1);">
+          <div style="font-size:54px;line-height:1;margin-bottom:18px;">💕</div>
+          <h1 style="font-family:Georgia,serif;font-size:34px;font-weight:400;color:#fff;margin:0 0 8px;line-height:1.2;">Save the,<br><em style="color:#ff6fb0;">DATE!</em></h1>
+        </div>
+        <div style="padding:36px 32px;">
+          <div style="width:48px;height:1px;background:#ff6fb0;margin:0 auto 28px;"></div>
+          <p style="color:#c0a8c8;font-size:15px;line-height:1.8;font-weight:300;text-align:center;margin:0 0 24px;">
+            Que bom que disse sim, nosso jantar vai ser muito bom -<br>
+            guarda esse email com carinho 🌹
+          </p>
+          <div style="background:rgba(255,77,148,.06);border:1px solid rgba(255,77,148,.15);border-radius:16px;padding:24px 28px;margin-bottom:28px;">
+            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">DATA</strong><br>11/06/2026</p>
+            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">LOCAL</strong><br>Minha casa</p>
+            <p style="margin:0 0 14px;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">O QUE ESPERAR</strong><br>Comida muuuuuito boa, carinho e massagens.</p>
+            <p style="margin:0;color:#e0c8e8;"><strong style="color:#ff6fb0;font-size:11px;letter-spacing:.12em;">TRAJE</strong><br>Gostosa como sempre</p>
+          </div>
+        </div>
+        <div style="border-top:1px solid rgba(255,100,176,.1);padding:24px 32px;text-align:center;">
+          <div style="font-size:19px;letter-spacing:.2em;">💗 💕 💗</div>
+          <p style="color:#6a4a72;font-size:13px;margin:10px 0 0;line-height:1.6;">
+            Você foi convidada porque é especial.<br>
+            <span style="color:#ff6fb0;">Isso é um fato.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+
+function isEmailConfigured() {
+  return !Object.values(EMAIL_CONFIG).some(value => value.includes('COLE_'));
+}
+
+async function sendInviteEmail() {
+  const status = document.getElementById('sendStatus');
+  const btn = document.getElementById('btnSendInvite');
+  const emailInput = document.getElementById('guestEmail');
+  const guestEmail = emailInput.value.trim();
+
+  if (!guestEmail || !guestEmail.includes('@')) {
+    emailInput.style.borderColor = '#ff4444';
+    status.textContent = 'Coloque um email válido para receber o convite.';
+    return;
+  }
+
+  emailInput.style.borderColor = 'rgba(255,109,176,.3)';
+
+  if (!isEmailConfigured()) {
+    status.textContent = 'EmailJS não configurado: coloque publicKey, serviceId e templateId no código.';
+    return;
+  }
+
+  if (!window.emailjs) {
+    status.textContent = 'Não consegui carregar o serviço de email. Verifique sua internet.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  status.textContent = 'Enviando o convite para o seu email...';
+
+  try {
+    emailjs.init({ publicKey: EMAIL_CONFIG.publicKey });
+    await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.templateId, {
+      to_email: guestEmail,
+      to_name: 'Gabi',
+      from_name: 'João',
+      subject: 'Seu jantar especial 💕',
+      message: 'Que bom que disse sim! Nosso jantar vai ser muito bom. Data: 11/06/2026. Local: Minha casa. O que esperar: Comida muuuuuito boa, carinho e massagens.',
+      message_html: INVITE_EMAIL_HTML,
+      reply_to: guestEmail
+    });
+    status.textContent = 'Email enviado! Agora é só olhar a caixa de entrada.';
+    btn.textContent = 'Enviar de novo 💌';
+  } catch (error) {
+    const details = error && (error.text || error.message) ? ` ${error.text || error.message}` : '';
+    console.error('Erro ao enviar email pelo EmailJS:', error);
+    status.textContent = `Não consegui enviar pelo EmailJS.${details}`;
+    btn.textContent = 'Tentar de novo 💌';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════
+   SCREENS
+══════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function handleYes() {
+  burstSparks();
+  setTimeout(() => showScreen('screen-yes'), 400);
+}
+</script>
+</body>
+</html>
